@@ -31,6 +31,7 @@ exports.postContactData = async (req,res) => {
 	}
 }
 exports.walletIdUpdateContactData = async (req,res) => {
+	console.log(req.body);
 	try
 	{
         const userToFind = await RamSetuContactModel.findOne({email:req.body.email})
