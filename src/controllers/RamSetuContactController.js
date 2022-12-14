@@ -19,7 +19,7 @@ exports.postContactData = async (req,res) => {
 	{
         const userToFind = await RamSetuContactModel.findOne({email:req.body.email})
         if(userToFind){
-            res.status(200).json({status:false ,users, msg: "User Already Exist" , userExist:true });
+            res.status(200).json({status:false , msg: "User Already Exist" , userExist:true });
         }
 		const users = await RamSetuContactModel.create(req.body);
 		res.status(200).json({status:true ,users, msg: "created successfully" });
