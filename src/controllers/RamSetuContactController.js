@@ -18,11 +18,11 @@ exports.postContactData = async (req,res) => {
 	try
 	{
         const userToFind = await RamSetuContactModel.findOne({email:req.body.email})
-        if(userToFind){
-            res.status(200).json({status:false , msg: "User Already Exist" , userExist:true });
+        if(await userToFind){
+           return res.status(300).json({status:false ,userToFind ,msg: "User Already Exist" , userExist:true });
         }
 		const users = await RamSetuContactModel.create(req.body);
-		res.status(200).json({status:true ,users, msg: "created successfully" });
+		return res.status(200).json({status:true ,users, msg: "created successfully" });
 	}
 	catch(err)
 	{
@@ -36,10 +36,10 @@ exports.walletIdUpdateContactData = async (req,res) => {
 	{
         const userToFind = await RamSetuContactModel.findOne({email:req.body.email})
         if(!userToFind){
-            res.status(404).json({status:false ,users, msg: "User Does not Exist"});
+           return res.status(404).json({status:false ,users, msg: "User Does not Exist"});
         }
 		const users = await RamSetuContactModel.findOneAndUpdate({email:req.body.email} , {walletId:req.body.walletId});
-		res.status(200).json({status:true ,users, msg: "Updated successfully" });
+		return res.status(200).json({status:true ,users, msg: "Updated successfully" });
 	}
 	catch(err)
 	{
