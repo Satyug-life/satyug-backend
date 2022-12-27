@@ -1,7 +1,7 @@
 const RamSetuContactModel = require("../models/RamSetuContactModel");
 
 
-exports.getAllContactData = async (req,res) => {
+module.exports.getAllContactData = async (req,res) => {
 	try
 	{
 		const users = await RamSetuContactModel.find();
@@ -14,15 +14,16 @@ exports.getAllContactData = async (req,res) => {
 	}
 }
 
-exports.postContactData = async (req,res) => {
+module.exports.postContactData = async (req,res) => {
 	try
 	{
         const userToFind = await RamSetuContactModel.findOne({email:req.body.email})
         if(await userToFind){
-           return res.status(300).json({status:false ,userToFind ,msg: "User Already Exist" , userExist:true });
-        }
+            res.status(300).json({status:false ,userToFind ,msg: "User Already Exists" , userExist:true });
+        }else{
 		const users = await RamSetuContactModel.create(req.body);
-		return res.status(200).json({status:true ,users, msg: "created successfully" });
+		 res.status(202).json({status:true ,users, msg: "created successfully" });
+		}
 	}
 	catch(err)
 	{
@@ -30,7 +31,7 @@ exports.postContactData = async (req,res) => {
 		res.status(500).json({msg: "Internal Server Error"});
 	}
 }
-exports.walletIdUpdateContactData = async (req,res) => {
+module.exports.walletIdUpdateContactData = async (req,res) => {
 	console.log(req.body);
 	try
 	{
