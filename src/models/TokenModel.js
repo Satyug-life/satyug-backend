@@ -11,6 +11,8 @@ const test = mongoose.Schema({
     enum:['Setu', 'Karma']
   },Token:{
     type:String,
+  },email:{
+    type:String,
     required:true
   }
 }, {

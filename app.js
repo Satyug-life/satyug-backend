@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 })
 
 app.use("/api/ram-setu", require("./src/routes/RamSetuContactRoutes"));
-app.use("/api/token", require("./src/routes/RamSetuContactRoutes"));
+app.use("/api/token", require("./src/routes/TokenRoute"));
 
 app.listen(port, () => {
   console.log(`Your app listening at port ${port}`);
