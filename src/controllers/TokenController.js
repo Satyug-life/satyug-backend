@@ -43,7 +43,7 @@ exports.postKarmaTokenData = async (req,res) => {
 	{
 		const users = await TokenModel.find({tokenType:'Karma',email:req.body.email});
         if(users.length>4){
-           return res.status(400).json({status:false ,users, msg: "Cannot Send Token" });
+           return res.status(402).json({status:false ,users, msg: "Cannot Send Token" });
         }
         await TokenModel.create({...req.body , tokenType:'Karma'});
 		res.status(200).json({status:true ,users, msg: "Token sent" });
