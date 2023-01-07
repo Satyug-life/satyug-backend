@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 
 app.use("/api/ram-setu", require("./src/routes/RamSetuContactRoutes"));
 app.use("/api/token", require("./src/routes/TokenRoute"));
-
+app.use("/api/whatsapp-share", require("./src/routes/WaRoute"));
 app.listen(port, () => {
   console.log(`Your app listening at port ${port}`);
 });
