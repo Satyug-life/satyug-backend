@@ -4,7 +4,7 @@ const router = express.Router();
 
 
 router.route("/")
-		.get(sendWhatsappData)
+		.post(sendWhatsappData)
 
 
 module.exports = router;
