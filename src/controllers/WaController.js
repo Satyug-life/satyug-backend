@@ -1,77 +1,85 @@
-const axios = require('axios');
+const axios = require("axios");
 
 async function sendMessage(data) {
   const config = {
-    method: 'POST',
+    method: "POST",
     url: `https://graph.facebook.com/${process.env.VERSION}/${process.env.FACEBOOKGRAPHURLID}/messages`,
     headers: {
-      'Authorization': `Bearer ${process.env.ACCESS_TOKEN}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${process.env.ACCESS_TOKEN}`,
+      "Content-Type": "application/json",
     },
-    data: data
+    data: data,
   };
- console.log("send message running")
- const x =  axios(config).then(resp=>{
-  console.log(resp.data, "response");
-})  
-.catch(error=>{
-console.log(error,"error occured")
-});
-  return x
+  console.log("send message running");
+  const x = axios(config)
+    .then((resp) => {
+      console.log(resp.data, "response");
+    })
+    .catch((error) => {
+      console.log(error, "error occured");
+    });
+  return x;
 }
 
 function getTextMessageInput(recipient, name) {
-  console.log(recipient)
+  console.log(recipient);
   // return JSON.stringify({ "messaging_product": "whatsapp", "to": recipient, "type": "template", "template": { "name": "hello_world", "language": { "code": "en_US" } } });
-  return JSON.stringify({ "messaging_product": "whatsapp",
-  "to": recipient,
-  "type": "template",
-  "template": {
-       "name": "satyug001",
-       "language": {
-         "code": "en"
-       },
-     "components": [
-     {
-         "type": "body",
-         "parameters": [
-             {
-                 "type": "text",
-                 "text": name
-             },
-              {
-                 "type": "text",
-                 "text": "Collectible"
-             }
-         ]
-     }
- ]
-  }}
-  );
+  return JSON.stringify({
+    messaging_product: "whatsapp",
+    to: recipient,
+    type: "template",
+    template: {
+      name: "satyug001",
+      language: {
+        code: "en",
+      },
+      components: [
+        {
+          type: "header",
+          parameters: [
+            {
+              type: "image",
+              image: {
+                link: "https://gateway.pinata.cloud/ipfs/QmP8SXkaY9zRQXHKQy1Mc7z8AQ5hf4aijMnYzKuRdtrde1",
+              },
+            },
+          ],
+        },
+        {
+          type: "body",
+          parameters: [
+            {
+              type: "text",
+              text: name,
+            },
+            {
+              type: "text",
+              text: "Collectible",
+            },
+          ],
+        },
+      ],
+    },
+  });
 }
 
-exports.sendWhatsappData = async (req,res) => {
+exports.sendWhatsappData = async (req, res) => {
   // console.log(req.body.phoneNumber)
-	try
-	{
-        const data = getTextMessageInput(req.body.phoneNumber ,req.body.name);
-        try {
-          sendMessage(data);
-        } catch (error) {
-          console.log(error)
-        }
-		res.status(200).json({status:true ,data, msg: "Whatsapp Data Sent" });
-	}
-	catch(err)
-	{
-		console.log(err);
-		res.status(500).json({status:false ,msg: "Internal Server Error from Wa Controller"});
-	}
-}
-
-
-
-
+  try {
+    const data = getTextMessageInput(req.body.phoneNumber, req.body.name);
+    try {
+      sendMessage(data);
+    } catch (error) {
+      console.log(error);
+    }
+    res.status(200).json({ status: true, data, msg: "Whatsapp Data Sent" });
+  } catch (err) {
+    console.log(err);
+    res
+      .status(500)
+      .json({ status: false, msg: "Internal Server Error from Wa Controller" });
+  }
+};
 
 // curl -i -X POST \
 //   https://graph.facebook.com/v15.0/100290529619763/messages \
