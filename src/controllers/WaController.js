@@ -3,7 +3,7 @@ const axios = require('axios');
 async function sendMessage(data) {
   const config = {
     method: 'POST',
-    url: `https://graph.facebook.com/v15.0/100290529619763/messages`,
+    url: `https://graph.facebook.com/${process.env.VERSION}/${process.env.FACEBOOKGRAPHURLID}/messages`,
     headers: {
       'Authorization': `Bearer ${process.env.ACCESS_TOKEN}`,
       'Content-Type': 'application/json'
@@ -20,58 +20,33 @@ console.log(error,"error occured")
   return x
 }
 
-function getTextMessageInput(recipient, text) {
+function getTextMessageInput(recipient, name) {
   console.log(recipient)
   // return JSON.stringify({ "messaging_product": "whatsapp", "to": recipient, "type": "template", "template": { "name": "hello_world", "language": { "code": "en_US" } } });
-  return JSON.stringify({
-    "messaging_product": "whatsapp",
-    "to": recipient,
-    "type": "template",
-    "template": {
-      "name": "sample_movie_ticket_confirmation",
-      "language": {
-        "code": "en_US"
-      },
-      "components": [
-        {
-          "type": "header",
-          "parameters": [
-            {
-              "type": "image",
-              "image": {
-                "link":"https://gateway.pinata.cloud/ipfs/QmP8SXkaY9zRQXHKQy1Mc7z8AQ5hf4aijMnYzKuRdtrde1"
-              }
-            }
-          ]
-        },
-        {
-          "type": "body",
-          "parameters": [
-            {
-              "type": "text",
-              "text": "Satyug Token Reward"
-            },
-            {
-              "type": "text",
-              "text": "Thank you for Filling out the Form. As a token of Reward, here is your Token. Ram Ji ki Setu mai aapka lagaya Pathar"
-            },
-            {
-              "type": "text",
-              "text": "Are you a true devotee of Ram ji? Do you want Ram ji to appear to you in his fierce form? If yes, then download the Artivive app and experience firsthand the intense form of Ram ji."
-            },
-            {
-              "type": "text",
-              "text": "Scan the picture above with the Artivive app and watch the magic happen"
-            },
-            // {
-            //   "type": "link",
-            //   "link": "https://play.google.com/store/apps/details?id=com.artivive&hl=en_IN&gl=US"
-            // }
-          ]
-        }
-      ]
-    }
-  }
+  return JSON.stringify({ "messaging_product": "whatsapp",
+  "to": recipient,
+  "type": "template",
+  "template": {
+       "name": "satyug001",
+       "language": {
+         "code": "en"
+       },
+     "components": [
+     {
+         "type": "body",
+         "parameters": [
+             {
+                 "type": "text",
+                 "text": name
+             },
+              {
+                 "type": "text",
+                 "text": "Collectible"
+             }
+         ]
+     }
+ ]
+  }}
   );
 }
 
@@ -79,7 +54,7 @@ exports.sendWhatsappData = async (req,res) => {
   // console.log(req.body.phoneNumber)
 	try
 	{
-        const data = getTextMessageInput(req.body.phoneNumber, 'Welcome to Satyug!');
+        const data = getTextMessageInput(req.body.phoneNumber ,req.body.name);
         try {
           sendMessage(data);
         } catch (error) {
