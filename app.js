@@ -8,6 +8,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 //connection of database.
 const mongoose = require("mongoose");
+const { videoUpload } = require("./src/utils/storeVideo");
 MongoDbURL = process.env.MONGODB_URL;
 mongoose.connect(MongoDbURL);
 var db = mongoose.connection;
@@ -26,6 +27,11 @@ app.get('/', (req, res) => {
 app.use("/api/ram-setu", require("./src/routes/RamSetuContactRoutes"));
 app.use("/api/token", require("./src/routes/TokenRoute"));
 app.use("/api/whatsapp-share", require("./src/routes/WaRoute"));
+
+
+app.post("/api/yoga-upload/yoga", videoUpload.single('video'),
+(err, req, res, next) => { res.status(200).json({ message: "Uploaded successfully" }); });
+
 app.listen(port, () => {
   console.log(`Your app listening at port ${port}`);
 });
