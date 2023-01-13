@@ -1,8 +1,15 @@
 const express = require("express");
 const cors = require("cors");
+const {uploadToS3} = require('./src/utils/storeVideo');
 const app = express();
+
+
+
+
 require("dotenv").config();
+
 const port = process.env.PORT || 8080;
+
 
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
@@ -29,8 +36,16 @@ app.use("/api/token", require("./src/routes/TokenRoute"));
 app.use("/api/whatsapp-share", require("./src/routes/WaRoute"));
 
 
-app.post("/api/yoga-upload/yoga", videoUpload.single('video'),
-(err, req, res, next) => { res.status(200).json({ message: "Uploaded successfully" }); });
+
+app.post("/api/yoga-upload/yoga", videoUpload.single('video'), (req, res) => {
+  uploadToS3(req.file);
+  res.send(req.file);
+
+}, (error, req, res, next) => {
+   res.status(400).send({ error: error.message })
+})
+
+// app.use("/api/yoga-upload", require("./src/routes/YogaRoute"));
 
 app.listen(port, () => {
   console.log(`Your app listening at port ${port}`);
