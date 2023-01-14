@@ -33,25 +33,26 @@ const videoUpload = multer({
 }
 })
 
-const uploadToS3 = async (fileData) =>{
+const uploadToS3 = async (fileData,fileName) =>{
 
     console.log("FILEDATA", fileData);
 
 
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME,
-    Key: `webiste/${fileData.fieldname}.mp4`,
+    Key: `webiste/${fileName}.mp4`,
     Body: fileData.buffer,
   }
-
-  s3.upload(params, (err, data) => {
+let videoUrl=""
+s3.upload(params, (err, data) => {
     if (err) {
       console.log(err);
     }
     console.log(data.Location);
+    videoUrl = data.Location;
     // resolve(data.Location)
   })
-    
+    return videoUrl
 }
 
 
