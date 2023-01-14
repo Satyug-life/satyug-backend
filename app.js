@@ -38,8 +38,8 @@ app.use("/api/whatsapp-share", require("./src/routes/WaRoute"));
 
 
 app.post("/api/yoga-upload/yoga", videoUpload.single('video'), (req, res) => {
-  uploadToS3(req.file, req.body.fileName);
-  res.send({videoUrl:`https://satyug-bucket.s3.amazonaws.com/webiste/${req.body.fileName}.mp4`});
+  uploadToS3(req.file, req.file.originalname);
+  res.send({videoUrl:`https://satyug-bucket.s3.amazonaws.com/webiste/${req.file.originalname}`});
 
 }, (error, req, res, next) => {
    res.status(400).send({ error: error.message })
