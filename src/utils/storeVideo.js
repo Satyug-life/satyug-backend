@@ -40,7 +40,7 @@ const uploadToS3 = async (fileData) =>{
 
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME,
-    Key: `${fileData.fieldname}.mp4`,
+    Key: `webiste/${fileData.fieldname}.mp4`,
     Body: fileData.buffer,
   }
 
