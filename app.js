@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const {uploadToS3} = require('./src/utils/storeVideo');
 const app = express();
+const { v4: uuidv4 } = require('uuid');
 
 
 
@@ -38,8 +39,10 @@ app.use("/api/whatsapp-share", require("./src/routes/WaRoute"));
 
 
 app.post("/api/yoga-upload/yoga", videoUpload.single('video'), (req, res) => {
-  uploadToS3(req.file, req.file.originalname);
-  res.send({videoUrl:`https://satyug-bucket.s3.amazonaws.com/webiste/${req.file.originalname}`});
+
+  const newId = uuidv4();
+  uploadToS3(req.file, newId);
+  res.send({videoUrl:`https://satyug-bucket.s3.amazonaws.com/videos/${newId}.mp4`});
 
 }, (error, req, res, next) => {
    res.status(400).send({ error: error.message })

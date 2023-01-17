@@ -1,6 +1,8 @@
 const multer = require("multer");
 const path = require('path');
 const AWS = require('aws-sdk');
+const { v4: uuidv4 } = require('uuid');
+
 
 const s3 = new AWS.S3({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -37,10 +39,9 @@ const uploadToS3 = async (fileData,fileName) =>{
 
     console.log("FILEDATA", fileData);
 
-
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME,
-    Key: `webiste/${fileName}.mp4`,
+    Key: `videos/${fileName}.mp4`,
     Body: fileData.buffer,
   }
 let videoUrl=""
